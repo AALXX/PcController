@@ -8,6 +8,8 @@ const NAMESPACE = 'CommandsControllerService';
 const CommandLoadder = (req: Request, res: Response, next: NextFunction) => {
   let CommandList = JSON.parse(req.body.commands);
 
+   // console.log(CommandList[0].keys)
+  
   //*It derermine what the command is
   switch (CommandList[0].command) {
     case "MoveMouse":
@@ -28,11 +30,40 @@ const CommandLoadder = (req: Request, res: Response, next: NextFunction) => {
     case "MouseClick":
       
       break;
-    case "":
-      break
+    case "HotKeysExec":
+
+      HotKeysExecuteFunc(CommandList[0].keys, (err: boolean) => {
+        
+      });
+      
+      break;
   }
 
 };
+
+const HotKeysExecuteFunc = (Keys:any, callBack:any) => {
+  // console.log(Keys[0])
+
+  let KeysList:any = []
+
+  for (let i in Keys) {
+    KeysList.push(Keys[i])
+  }
+  console.log(JSON.stringify(KeysList))
+  
+  const python = spawn('python.exe', [`./src/Scripts/Mouse-KeyBoard-Scripts/KeyBoard/HotKeyPressingScript.py`,  JSON.stringify(KeysList)]);
+  python.stdout.on('data', (data) => {
+    console.log(data.toString())
+    python.on('close', (code) => {
+      if (code !== 0) {
+        logging.error(NAMESPACE, `Process cloased with code ${code}`)
+        return callBack(true);
+      }
+      
+      return callBack(false);
+    });
+  });
+}
 
 const MouseClickFunc = (callBack: any) => {
   

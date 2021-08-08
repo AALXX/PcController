@@ -1,12 +1,15 @@
 import pyautogui
 import sys
+import json
+
+del sys.argv[0]
+jsonString = json.loads(sys.argv[0])
+
 
 #TODO:FIND A BETTER SOLUTION FOR HOTKEYS
-del sys.argv[0]
+for i in jsonString:
+        print(i)    
+        pyautogui.keyDown(i)
 
-
-for i in sys.argv:
-    pyautogui.keyDown(i)
-
-for i in sys.argv:
-    pyautogui.keyUp(i)
+for i in jsonString:
+        pyautogui.keyUp(i)
