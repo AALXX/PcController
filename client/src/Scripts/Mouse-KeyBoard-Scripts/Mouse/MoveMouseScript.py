@@ -1,3 +1,5 @@
 import pyautogui
 import sys
-pyautogui.moveTo(int(sys.argv[1]), int(sys.argv[2]))
+
+del sys.argv[0]
+pyautogui.moveTo(int(sys.argv[0]), int(sys.argv[1]))
