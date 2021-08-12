@@ -8,7 +8,7 @@ const NAMESPACE = 'CommandsControllerService';
 const CommandLoadder = (req: Request, res: Response, next: NextFunction) => {
   let CommandList = JSON.parse(req.body.commands);
 
-  // console.log(CommandList[0].keys)
+  
 
   //*It derermine what the command is
   switch (CommandList[0].command) {
@@ -27,11 +27,24 @@ const CommandLoadder = (req: Request, res: Response, next: NextFunction) => {
 
       });
       break;
+    
     case "MouseClick":
+      MouseClickFunc((err: boolean) => {
+        if (err) {
+          return res.status(200).
+            json({
+              success: false,
+            });
+        }
 
-      break;
+        return res.status(200).
+          json({
+            success: true,
+          });
+      },CommandList[0].PosX, CommandList[0].PosY)
+    break;
+    
     case "HotKeysExec":
-
       HotKeysExecuteFunc(CommandList[0].keys, (err: boolean) => {
         if (err) {
           return res.status(200).
@@ -46,6 +59,7 @@ const CommandLoadder = (req: Request, res: Response, next: NextFunction) => {
 
       });
       break;
+    
     case "KBWrite":
       KeyBoarWritingFunc(CommandList[0].sentence, (err: boolean) => {
         if (err) {
@@ -65,7 +79,7 @@ const CommandLoadder = (req: Request, res: Response, next: NextFunction) => {
 
 };
 
-
+//*KeyBoard Commands
 const HotKeysExecuteFunc = (Keys: any, callBack: any) => {
   let KeysList: any = []
 
@@ -101,8 +115,20 @@ const KeyBoarWritingFunc = (Sentence: string, callBack: any,repetitions:string =
   });
 }
 
-const MouseClickFunc = (callBack: any) => {
+//* Mouse Commands
+const MouseClickFunc = (callBack: any, PosX:string = "", PosY:string = "") => {
+  const python = spawn('python.exe', [`./src/Scripts/Mouse-KeyBoard-Scripts/MOUSE/MouseClickScript.py`, `${PosX}`,`${PosY}`]);
+  python.stdout.on('data', (data) => {
+    console.log(data.toString())
+  })
 
+  python.on('close', (code) => {
+    if (code !== 0) {
+      logging.error(NAMESPACE, `Process cloased with code ${code}`)
+      return callBack(true);
+    }
+    return callBack(false);
+  });
 }
 
 const MoveMouseFunc = (PosX: number, PosY: number, callBack: any) => {

@@ -1,6 +1,5 @@
 import pyautogui
 import sys
-import time
 
 del sys.argv[0]
 
