@@ -8,7 +8,6 @@ jsonString = json.loads(sys.argv[0])
 
 #TODO:FIND A BETTER SOLUTION FOR HOTKEYS
 for i in jsonString:
-        print(i)    
         pyautogui.keyDown(i)
 
 for i in jsonString:

@@ -4,78 +4,74 @@ import { spawn } from 'child_process';
 
 const NAMESPACE = 'CommandsControllerService';
 
+
+const CommandsReceiver = (req: Request, res: Response, next: NextFunction) => {
+  CommandLoadder(req.body.commands, (erros: string[]) => {
+    console.log(erros)
+    if (Object.keys(erros).length !== 0) {
+      return res.status(200).json({
+        success: false,
+        errors:erros
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+    });
+    
+  })
+}
+
 //*It loads the commands to be executed in order
-const CommandLoadder = (req: Request, res: Response, next: NextFunction) => {
-  let CommandList = JSON.parse(req.body.commands);
+const CommandLoadder = (Commands: any, callBack: any) => {
+  let CommandList = JSON.parse(Commands);
+  let errorsArray: string[] = []
+  // console.log(CommandList)
+  //*TODO FIX BUG: GOES TO NEXT COMMAND AND NOT FINISHING THE CURRENT
 
-  
+  for (let i = 0; i < CommandList.length; i++) {
+    console.log(CommandList[i]);
+    //*It derermine what the command is
+    switch (CommandList[i].command) {
+      case "MoveMouse":
+        MoveMouseFunc(CommandList[i].PosX, CommandList[i].PosY, (err: boolean) => {
+          if (err) {
+            // return 
+            errorsArray.push("MoveMouseEvent");
+          }
 
-  //*It derermine what the command is
-  switch (CommandList[0].command) {
-    case "MoveMouse":
-      MoveMouseFunc(CommandList[0].PosX, CommandList[0].PosY, (err: boolean) => {
-        if (err) {
-          return res.status(200).
-            json({
-              success: false,
-            });
-        }
-        return res.status(200).
-          json({
-            success: true,
-          });
+        });
+        break;
 
-      });
-      break;
-    
-    case "MouseClick":
-      MouseClickFunc((err: boolean) => {
-        if (err) {
-          return res.status(200).
-            json({
-              success: false,
-            });
-        }
+      case "MouseClick":
+        MouseClickFunc((err: boolean,finished:boolean) => {
+          if (err) {
+            errorsArray.push("MouseClickEvent");
+          }
 
-        return res.status(200).
-          json({
-            success: true,
-          });
-      },CommandList[0].PosX, CommandList[0].PosY)
-    break;
-    
-    case "HotKeysExec":
-      HotKeysExecuteFunc(CommandList[0].keys, (err: boolean) => {
-        if (err) {
-          return res.status(200).
-            json({
-              success: false,
-            });
-        }
-        return res.status(200).
-          json({
-            success: true,
-          });
+        }, CommandList[i].PosX, CommandList[i].PosY)
+        break;
 
-      });
-      break;
-    
-    case "KBWrite":
-      KeyBoarWritingFunc(CommandList[0].sentence, (err: boolean) => {
-        if (err) {
-          return res.status(200).
-            json({
-              success: false,
-            });
-        }
-        return res.status(200).
-          json({
-            success: true,
-          });
+      case "HotKeysExec":
+        HotKeysExecuteFunc(CommandList[i].keys, (err: boolean) => {
+          if (err) {
+            errorsArray.push("HotKeysExecEvent");
+          }
 
-      }, CommandList[0].repetitions);
-      break;
+        });
+        break;
+
+      case "KBWrite":
+        KeyBoarWritingFunc(CommandList[i].sentence, (err: boolean) => {
+          if (err) {
+            errorsArray.push("KBWriteEvent");
+          }
+
+        }, CommandList[i].repetitions);
+        break;
+    }
   }
+  callBack(errorsArray)
 
 };
 
@@ -92,16 +88,16 @@ const HotKeysExecuteFunc = (Keys: any, callBack: any) => {
   python.on('close', (code) => {
     if (code !== 0) {
       logging.error(NAMESPACE, `Process cloased with code ${code}`)
-      return callBack(true);
+      return callBack(true, true);
     }
 
-    return callBack(false);
+    return callBack(false, true);
   });
 }
 
-const KeyBoarWritingFunc = (Sentence: string, callBack: any,repetitions:string = "") => {
+const KeyBoarWritingFunc = (Sentence: string, callBack: any, repetitions: string = "") => {
 
-  const python = spawn('python.exe', [`./src/Scripts/Mouse-KeyBoard-Scripts/KeyBoard/KeyBoardWritingScript.py`, `${Sentence}`,`${repetitions}`]);
+  const python = spawn('python.exe', [`./src/Scripts/Mouse-KeyBoard-Scripts/KeyBoard/KeyBoardWritingScript.py`, `${Sentence}`, `${repetitions}`]);
   python.stdout.on('data', (data) => {
     console.log(data.toString())
   })
@@ -116,8 +112,8 @@ const KeyBoarWritingFunc = (Sentence: string, callBack: any,repetitions:string =
 }
 
 //* Mouse Commands
-const MouseClickFunc = (callBack: any, PosX:string = "", PosY:string = "") => {
-  const python = spawn('python.exe', [`./src/Scripts/Mouse-KeyBoard-Scripts/MOUSE/MouseClickScript.py`, `${PosX}`,`${PosY}`]);
+const MouseClickFunc = (callBack: any, PosX: string = "", PosY: string = "") => {
+  const python = spawn('python.exe', [`./src/Scripts/Mouse-KeyBoard-Scripts/MOUSE/MouseClickScript.py`, `${PosX}`, `${PosY}`]);
   python.stdout.on('data', (data) => {
     console.log(data.toString())
   })
@@ -144,5 +140,6 @@ const MoveMouseFunc = (PosX: number, PosY: number, callBack: any) => {
 }
 
 export default {
-  CommandLoadder
+  CommandLoadder,
+  CommandsReceiver
 };
