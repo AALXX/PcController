@@ -3,26 +3,28 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "server": "nodemon --exec ts-node src/BackendApi/api/BackendApi.ts"
+    "server": "nodemon --exec ts-node src/PcController-Api-Layer/api/PcControllerApi.ts",
+    "build:BackEnd": "rm -rf backend-build/ && tsc "
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/dotenv": "^8.2.0",
-    "@types/express": "^4.17.13",
-    "@types/hat": "^0.0.1",
-    "@types/mysql": "^2.15.19",
-    "@types/socket.io": "^3.0.2",
-    "nodemon": "^2.0.12",
-    "ts-node": "^10.1.0",
-    "ts-node-dev": "^1.1.8",
-    "typescript": "^4.3.5"
+    "@types/express": "^4.17.11",
+    "@types/mysql": "^2.15.18",
+    "nodemon": "^2.0.7",
+    "ts-node": "^10.4.0",
+    "ts-node-dev": "^1.1.6",
+    "typescript": "^4.2.4",
+    "@types/express-validator": "^3.0.0"
   },
   "dependencies": {
-    "dotenv": "^10.0.0",
+    "bcrypt": "^5.0.1",
     "express": "^4.17.1",
-    "hat": "^0.0.3",
-    "http": "^0.0.1-security",
+    "express-validator": "^6.13.0",
+    "http": "*",
     "mysql": "^2.18.1"
   }
 }
