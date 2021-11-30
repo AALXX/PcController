@@ -1,0 +1,28 @@
+
+.TabContainer{
+    display: flex;
+    width:12rem;
+    border:transparent;
+    outline:none;
+    cursor:pointer;
+    height: 3rem;
+    align-self:center;
+    background: #757575;
+    justify-content:center;
+    margin-left: 1rem;
+}
+
+.TabContainer:hover{
+    background: #8f8f8f;
+}
+
+.TabContainer:active{
+    background: #4e4e4e;
+}
+
+.MachineNameText{
+    font-size: 1.3em;
+    align-self: center;
+    color:#ffffff;
+    font-family: "Exo 2";
+}

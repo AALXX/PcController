@@ -2,7 +2,7 @@ import http from 'http';
 import express, { NextFunction } from 'express';
 
 //* imports from route folder
-// import UserAccountRoutesControler from "../routes/UserAccountRoutes/UserAccountRoutesControler";
+import MachinesRoutesControler from "../routes/MachinesControllerRoutes/MachinesControllerRoutes";
 
 //*Configs
 import config from "../config/config";
@@ -26,7 +26,7 @@ router.use((req, res, next) => {
 })
 
 //* Routes
-// router.use("/api/user-account-manager/", UserAccountRoutesControler);
+router.use("/api/machines-manager/", MachinesRoutesControler);
 
 
 //* Error Handleling

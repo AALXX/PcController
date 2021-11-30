@@ -1,0 +1,145 @@
+.PageCotnainer{
+    display: flex;
+    flex:1;
+    align-items: center;
+    flex-direction: column;
+}
+
+.AddMachineCard{
+    display: flex;
+    flex-direction: column;
+    background-color: #3f3f3f;
+    width: 35rem;
+    height: 70vh;
+    overflow-y: scroll;
+    margin-top: 2rem;
+}
+
+.AddMachineCard::-webkit-scrollbar {
+    width: 7px;
+}
+
+/* Handle */
+.AddMachineCard::-webkit-scrollbar-thumb {
+    background: #2e2e2e;
+}
+
+.AddMachineText{
+    align-self: center;
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-family: "Exo 2 bold";
+}
+
+.Bar{
+    width: 80%;
+}
+
+
+/* Machine Name Part */
+
+.MachineNamePart{
+    display: flex;
+    align-self: center;
+    width: 75%;
+    margin-top: 1.5rem;
+    flex-direction: column;
+}
+ 
+.NameText{
+    color: #ffffff;
+    font-size: 1rem;
+    font-family: "Exo 2";
+}
+
+.MachineNameInput{
+    height: 1.5rem;
+    margin-top: .5rem;
+    background-color: #555555;
+    border: none;
+    color: #FFFFFF;
+}
+
+/* Machine Ip  */
+
+.MachineIpPart{
+    display: flex;
+    align-self: center;
+    width: 75%;
+    margin-top: 1.5rem;
+    flex-direction: column;
+}
+
+.MachineIpText{
+    color: #ffffff;
+    font-size: 1rem;
+    font-family: "Exo 2";
+}
+
+.MachineIpInput{
+    height: 1.5rem;
+    margin-top: .5rem;
+    background-color: #555555;
+    border: none;
+    color: #FFFFFF;
+}
+
+/* Machine OS  */
+
+.MachineOsPart{
+    display: flex;
+    align-self: center;
+    width: 75%;
+    margin-top: 1.5rem;
+    flex-direction: column;
+}
+
+.MachineOsText{
+    color: #ffffff;
+    font-size: 1rem;
+    font-family: "Exo 2";
+}
+
+.MachineOsSelect{
+    margin-top: 2vh;
+    background-color: #363636;
+    color: white;
+    border: none;
+}
+
+/* card footer */
+
+.BottomBar{
+    width: 80%;
+    margin-top: auto;
+}
+
+
+.FooterCardContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+.AddMachineButton{
+    margin: auto;
+    margin-bottom: 2%;
+    color: #ffffff;
+    background-color: transparent;
+    border: transparent;
+    outline: none;
+    cursor: pointer;
+    font-size: 1rem;
+
+}
+.AddMachineButton:hover{
+    color: #dbdbdb;
+
+}
+
+@media (max-width: 800px) {
+    .PageCotnainer{
+        width: 22rem;
+        height: 30rem;
+
+    }
+}
